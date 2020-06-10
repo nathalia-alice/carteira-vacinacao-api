@@ -5,10 +5,10 @@ module.exports = {
   development: {
     client: process.env.KNEX_CLIENT,
     connection: {
-      host : 'localhost',
-      user : 'root',
-      password : '',
-      database : 'carteira-vacinacao-online'
+      host : process.env.KNEX_DEV_HOST,
+      database: process.env.KNEX_DEV_DATABASE,
+      user:     process.env.KNEX_DEV_USER,
+      password: process.env.KNEX_DEV_PASSWORD
     }
   },
 
