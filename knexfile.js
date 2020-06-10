@@ -15,10 +15,10 @@ module.exports = {
   production: {
     client: process.env.KNEX_CLIENT,
     connection: {
-      host : 'sql10.freemysqlhosting.net',
-      database: 'sql10346494',
-      user:     'sql10346494',
-      password: 'ncrPlMdgIW'
+      host : process.env.KNEX_PRD_HOST,
+      database: process.env.KNEX_PRD_DATABASE,
+      user:     process.env.KNEX_PRD_USER,
+      password: process.env.KNEX_PRD_PASSWORD
     }
   }
 
