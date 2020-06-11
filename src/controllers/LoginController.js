@@ -18,7 +18,7 @@ module.exports = {
             const type = userIdentified.type; 
 
             var token = jwt.sign({ id, email, type }, process.env.SECRET_KEY, {
-                expiresIn: 900
+                expiresIn: 7200 //120 minutes
             });
 
             response.status(200).send({ auth: true, message: "Login realizado com sucesso.", token: token });
