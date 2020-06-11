@@ -6,13 +6,12 @@ module.exports = {
 
     async login(request, response){
         const formatedPassword = crypto.createHash('md5').update(request.body.password).digest("hex");
-        
         const userIdentified = await connection('users').where({
             email: request.body.user,
             password: formatedPassword
-        }).first('id', 'email', 'type');
-    
-        if(userIdentified){
+        }).first('id', 'email', 'type', 'active');
+       
+        if(userIdentified && userIdentified.active > 0){
             const id = userIdentified.id; 
             const email = userIdentified.email; 
             const type = userIdentified.type; 

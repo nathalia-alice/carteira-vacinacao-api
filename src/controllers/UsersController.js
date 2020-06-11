@@ -13,7 +13,7 @@ module.exports = {
         const id = crypto.randomBytes(4).toString('HEX');
         const password = crypto.createHash('md5').update(passwordNormalize).digest("hex");
        
-        var active= false;
+        var active;
         var cpf = false;
         var cnpj = false;
        
@@ -23,8 +23,11 @@ module.exports = {
             cpf = true;
         }
 
-        if(type !== "administrador"){
+        if(type !== "posto-saude"){
+            console.log("true")
             active = true;
+        }else{
+            active = false;
         }
 
         await connection('users').insert({
