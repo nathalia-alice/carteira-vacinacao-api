@@ -78,6 +78,20 @@ module.exports = {
     },
 
     async getUsersDisabled(request, response){
-        return true;
+        const users = await connection('users').where('active', 0);
+
+        return response.json(users);
+    },
+
+    async putUsersDisabled(request, response){
+       
+        const id = request.params.id;
+       
+        await connection('users')
+            .where('id', id)
+            .update('active', 1);
+
+        return response.status(200).send({ message: "Usuário habilitado com sucesso!" });
+       
     }
 }

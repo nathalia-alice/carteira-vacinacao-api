@@ -1,5 +1,5 @@
 const express = require('express');
-const {celebrate, Segments, Joi} = require('celebrate');
+const { celebrate, Segments, Joi } = require('celebrate');
 const routes = express.Router();
 const VaccinesController = require('./controllers/VaccinesController')
 const UsersController = require('./controllers/UsersController')
@@ -67,7 +67,6 @@ routes.put('/users/:id', celebrate({
     })
 }), verifyJWT.index, ProfileController.put);
 
-
 routes.post('/vaccinesxuser', celebrate({
     [Segments.BODY]: Joi.object().keys({
         id_vaccine: Joi.string().required(),
@@ -80,5 +79,11 @@ routes.get('/vaccinesxuser', verifyJWT.index, VaccinesUserController.index);
 
 /*login*/
 routes.post('/login', (req, res) => LoginController.login(req, res));
+
+routes.put('/usersdisabled/:id', celebrate({
+    [Segments.PARAMS]: Joi.object({
+        id: Joi.string().required()
+    })
+}), verifyJWT.index, UsersController.putUsersDisabled);
 
 module.exports = routes;
