@@ -23,8 +23,7 @@ module.exports = {
             cpf = true;
         }
 
-        if(type !== "posto-saude"){
-            console.log("true")
+        if(type === "cidadao"){
             active = true;
         }else{
             active = false;
