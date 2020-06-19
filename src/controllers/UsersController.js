@@ -34,7 +34,7 @@ module.exports = {
         .orWhere('email', email);
 
         if(verifyDuplicatedUsers.length > 0){
-            return response.json({ message: "Esse usuário já existe, por favor verifique e-mail ou documento." });
+            return response.status(401).send({ message: "Esse usuário já existe, por favor verifique e-mail ou documento." });
         }else{
 
             await connection('users').insert({
