@@ -29,28 +29,38 @@ module.exports = {
             active = false;
         }
 
-        await connection('users').insert({
-            id,
-            name,
-            doc,
-            cpf,
-            cnpj,
-            cep,
-            street,
-            neighborhood,
-            city,
-            state,
-            number,
-            complement,
-            birth,
-            telephone,
-            active,
-            type,
-            email,
-            password
-        });
+        const verifyDuplicatedUsers = await connection('users')
+        .where('doc', doc)
+        .orWhere('email', email);
 
-        return response.json({ id, name });
+        if(verifyDuplicatedUsers.length > 0){
+            return response.json({ message: "Esse usuário já existe, por favor verifique e-mail ou documento." });
+        }else{
+
+            await connection('users').insert({
+                id,
+                name,
+                doc,
+                cpf,
+                cnpj,
+                cep,
+                street,
+                neighborhood,
+                city,
+                state,
+                number,
+                complement,
+                birth,
+                telephone,
+                active,
+                type,
+                email,
+                password
+            });
+
+            return response.json({ id, name });
+        }
+
     },
 
     async getUsuariosComVacinas(request, response){
