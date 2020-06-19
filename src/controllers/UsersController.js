@@ -12,30 +12,30 @@ module.exports = {
         const { name, doc, cep, street, neighborhood, city, state, number, complement, birth, telephone, type, email, passwordNormalize } = request.body;
         const id = crypto.randomBytes(4).toString('HEX');
         const password = crypto.createHash('md5').update(passwordNormalize).digest("hex");
-       
+
         var active;
         var cpf = false;
         var cnpj = false;
-       
-        if(doc.length > 11){
+
+        if (doc.length > 11) {
             cnpj = true;
-        }else{
+        } else {
             cpf = true;
         }
 
-        if(type === "cidadao"){
+        if (type === "cidadao") {
             active = true;
-        }else{
+        } else {
             active = false;
         }
 
         const verifyDuplicatedUsers = await connection('users')
-        .where('doc', doc)
-        .orWhere('email', email);
+            .where('doc', doc)
+            .orWhere('email', email);
 
-        if(verifyDuplicatedUsers.length > 0){
+        if (verifyDuplicatedUsers.length > 0) {
             return response.status(401).send({ message: "Esse usuário já existe, por favor verifique e-mail ou documento." });
-        }else{
+        } else {
 
             await connection('users').insert({
                 id,
@@ -63,44 +63,47 @@ module.exports = {
 
     },
 
-    async getUsuariosComVacinas(request, response){
+    async getUsuariosComVacinas(request, response) {
         const userId = request.userId;
         const type = request.type;
 
         var usersWithVaccines;
 
-        if(type === "cidadao"){ 
+        if (type === "cidadao") {
             usersWithVaccines = await connection('users').where('id', userId);
-        }else{
+        } else {
             usersWithVaccines = await connection('users').select('*');
         }
-       
+
         return response.json(usersWithVaccines);
-       
+
     },
 
-    async delete(request, response){
+    async delete(request, response) {
         const { id } = request.params;
 
         await connection('users').where('id', id).delete();
         return response.status(200).send({ message: "Deletado com sucesso!" });
     },
 
-    async getUsersDisabled(request, response){
+    async getUsersDisabled(request, response) {
         const users = await connection('users').where('active', 0);
 
         return response.json(users);
     },
 
-    async putUsersDisabled(request, response){
-       
+    async putUsersDisabled(request, response) {
+
         const id = request.params.id;
-       
+
         await connection('users')
-            .where('id', id)
-            .update('active', 1);
+            .where({ id: id })
+            .update({
+                active: true
+            });
+
 
         return response.status(200).send({ message: "Usuário habilitado com sucesso!" });
-       
+
     }
 }
